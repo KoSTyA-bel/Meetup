@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Meetup.DataLayer.Migrations
 {
     [DbContext(typeof(MeetupContext))]
-    [Migration("20221019193753_Initial")]
-    partial class Initial
+    [Migration("20221020092042_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace Meetup.DataLayer.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Meetup.BusinessLayer.Models.Meetup", b =>
+            modelBuilder.Entity("Meetup.BusinessLayer.Models.Meeting", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace Meetup.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meetups", (string)null);
+                    b.ToTable("Meetings", (string)null);
                 });
 #pragma warning restore 612, 618
         }

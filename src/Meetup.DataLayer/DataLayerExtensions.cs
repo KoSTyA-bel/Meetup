@@ -8,24 +8,39 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Meetup.DataLayer;
 
+/// <summary>
+/// Expands functionality of service collection.
+/// </summary>
 public static class DataLayerExtensions
 {
-    public static IServiceCollection AddMeetupDatabase(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// Adds the meeting database.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>Service collection.</returns>
+    public static IServiceCollection AddMeetingDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("MeetupDB");
 
-        services.AddMeetupDatabase(connectionString);
+        services.AddMeetingDatabase(connectionString);
 
         return services;
     }
 
-    public static IServiceCollection AddMeetupDatabase(this IServiceCollection services, string connectionString)
+    /// <summary>
+    /// Adds the Meeting database.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="connectionString">The connection string.</param>
+    /// <returns>Service collection.</returns>
+    public static IServiceCollection AddMeetingDatabase(this IServiceCollection services, string connectionString)
     {
         services.AddDbContextPool<MeetupContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped(provider =>
             {
                 var service = provider.GetService(typeof(MeetupContext)) as MeetupContext;
-                return service.Meetups;
+                return service.Meetings;
             })
             .AddScoped<IDataContext, MeetupDataContext>()
             .AddScoped<IMeetupRepository, MeetupRepository>()

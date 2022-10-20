@@ -22,7 +22,7 @@ namespace Meetup.DataLayer.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Meetup.BusinessLayer.Models.Meetup", b =>
+            modelBuilder.Entity("Meetup.BusinessLayer.Models.Meeting", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace Meetup.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meetups", (string)null);
+                    b.ToTable("Meetings", (string)null);
                 });
 #pragma warning restore 612, 618
         }

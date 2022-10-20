@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Models = Meetup.BusinessLayer.Models;
+using Meetup.BusinessLayer.Models;
 
 namespace Meetup.DataLayer.Configurations;
 
-public class MeetupConfiguration : IEntityTypeConfiguration<Models.Meetup>
+/// <summary>
+/// Configures an entity type <see cref="Meeting"/>.
+/// </summary>
+/// <seealso cref="Microsoft.EntityFrameworkCore.IEntityTypeConfiguration&lt;Meetup.BusinessLayer.Models.Meeting&gt;" />
+public class MeetupConfiguration : IEntityTypeConfiguration<Meeting>
 {
-    public void Configure(EntityTypeBuilder<Models.Meetup> builder)
+    /// <inheritdoc/>
+    public void Configure(EntityTypeBuilder<Meeting> builder)
     {
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
@@ -17,6 +22,6 @@ public class MeetupConfiguration : IEntityTypeConfiguration<Models.Meetup>
         builder.Property(x => x.Desciption).IsRequired();
         builder.Property(x => x.Date).IsRequired();
 
-        builder.ToTable("Meetups");
+        builder.ToTable("Meetings");
     }
 }

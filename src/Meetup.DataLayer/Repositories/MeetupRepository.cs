@@ -1,37 +1,49 @@
 ﻿using Meetup.BusinessLayer.Interfaces;
-using Models = Meetup.BusinessLayer.Models;
-using Meetup.DataLayer.Providers;
+using Meetup.BusinessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Meetup.DataLayer.Repositories;
 
+/// <summary>
+/// Provides methods for creating, deleting and modifying meetings.
+/// </summary>
+/// <seealso cref="Meetup.BusinessLayer.Interfaces.IMeetupRepository" />
 public class MeetupRepository : IMeetupRepository
 {
-    private readonly DbSet<Models.Meetup> _meetups;
+    private readonly DbSet<Meeting> _meetings;
     private readonly ILogger<MeetupRepository> _logger;
 
-    public MeetupRepository(DbSet<Models.Meetup> battles, ILogger<MeetupRepository> logger)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MeetupRepository"/> class.
+    /// </summary>
+    /// <param name="meetups">The meetups.</param>
+    /// <param name="logger">The logger.</param>
+    /// <exception cref="System.ArgumentNullException">if <paramref name="meetups"/> is null or <paramref name="logger"/> is null.</exception>
+    public MeetupRepository(DbSet<Meeting> meetups, ILogger<MeetupRepository> logger)
     {
-        _meetups = battles ?? throw new ArgumentNullException(nameof(battles));
+        _meetings = meetups ?? throw new ArgumentNullException(nameof(meetups));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    public Task Create(Models.Meetup meetup, CancellationToken token)
+    /// <inheritdoc/>
+    public Task Create(Meeting meetup, CancellationToken token)
     {
         _logger.LogTrace("Creating new meetup={meetup}", meetup);
-        return Task.FromResult(_meetups.Add(meetup));
+        return Task.FromResult(_meetings.Add(meetup));
     }
 
-    public Task Delete(Models.Meetup meetup, CancellationToken token)
+    /// <inheritdoc/>
+    public Task Delete(Meeting meetup, CancellationToken token)
     {
         _logger.LogTrace("Deleting meetup={meetup}", meetup);
-        return Task.FromResult(_meetups.Remove(meetup));
+        return Task.FromResult(_meetings.Remove(meetup));
     }
 
-    public Task Update(Models.Meetup meetup, CancellationToken token)
+    /// <inheritdoc/>
+    public Task Update(Meeting meetup, CancellationToken token)
     {
         _logger.LogTrace("Updating meetup={battle}", meetup);
-        return Task.FromResult(_meetups.Update(meetup));
+        return Task.FromResult(_meetings.Update(meetup));
     }
 }

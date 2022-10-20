@@ -1,14 +1,24 @@
 ﻿using Meetup.BusinessLayer.Interfaces;
-using System.Globalization;
 
 namespace Meetup.BusinessLayer.Services;
 
+/// <summary>
+/// Provides methods for working with meetings.
+/// </summary>
+/// <seealso cref="Meetup.BusinessLayer.Interfaces.IMeetupService" />
 public class MeetupService : IMeetupService
 {
     private readonly IMeetupProvider _provider;
     private readonly IMeetupRepository _repository;
     private readonly IDataContext _context;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MeetupService"/> class.
+    /// </summary>
+    /// <param name="provider">The provider.</param>
+    /// <param name="repository">The repository.</param>
+    /// <param name="context">The context.</param>
+    /// <exception cref="System.ArgumentNullException">If <paramref name="context"/> is null or <paramref name="provider"/> is null or <paramref name="repository"/> is null.<</exception>
     public MeetupService(IMeetupProvider provider, IMeetupRepository repository, IDataContext context)
     {
         _provider = provider ?? throw new ArgumentNullException(nameof(provider));
@@ -16,7 +26,8 @@ public class MeetupService : IMeetupService
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<Models.Meetup> Create(Models.Meetup meetup, CancellationToken token)
+    /// <inheritdoc/>
+    public async Task<Models.Meeting> Create(Models.Meeting meetup, CancellationToken token)
     {
         if (meetup is null)
         {
@@ -29,6 +40,7 @@ public class MeetupService : IMeetupService
         return meetup;
     }
 
+    /// <inheritdoc/>
     public async Task Delete(Guid id, CancellationToken token)
     {
         if (id == Guid.Empty)
@@ -37,15 +49,25 @@ public class MeetupService : IMeetupService
         }
 
         var meetup = await _provider.GetById(id, token);
+
+        if (meetup is null)
+        {
+            return;
+        }
+
+        await _repository.Delete(meetup, token);
+
         await _context.SaveCanges(token);
     }
 
-    public Task<List<Models.Meetup>> GetAll(CancellationToken token)
+    /// <inheritdoc/>
+    public Task<List<Models.Meeting>> GetAll(CancellationToken token)
     {
         return _provider.GetAll(token);
     }
 
-    public Task<Models.Meetup> GetById(Guid id, CancellationToken token)
+    /// <inheritdoc/>
+    public Task<Models.Meeting> GetById(Guid id, CancellationToken token)
     {
         if (id == Guid.Empty)
         {
@@ -55,7 +77,8 @@ public class MeetupService : IMeetupService
         return _provider.GetById(id, token);
     }
 
-    public Task<List<Models.Meetup>> GetRange(int page, int pageSize, CancellationToken token)
+    /// <inheritdoc/>
+    public Task<List<Models.Meeting>> GetRange(int page, int pageSize, CancellationToken token)
     {
         if (page < 1)
         {
@@ -70,7 +93,8 @@ public class MeetupService : IMeetupService
         return _provider.GetRange(page, pageSize, token);
     }
 
-    public async Task Update(Models.Meetup meetup, CancellationToken token)
+    /// <inheritdoc/>
+    public async Task Update(Models.Meeting meetup, CancellationToken token)
     {
         if (meetup is null)
         {

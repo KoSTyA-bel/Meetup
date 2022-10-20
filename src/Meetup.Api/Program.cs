@@ -1,24 +1,34 @@
-using Meetup.Api;
+using Meetup.Api.Infrastructure.Configurations;
+using Meetup.Api.Infrastructure.MappingProfiles;
+using Meetup.Api.Infrastructure.Middlewares;
 using Meetup.BusinessLayer;
 using Meetup.DataLayer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder
+    .AddAppSettings()
+    .AddJWTVerifierSettings();
 
 builder.Services
     .AddAutoMapper(typeof(MappingProfile))
     .AddMeetupService()
-    .AddMeetupDatabase(builder.Configuration);
+    .AddMeetingDatabase(builder.Configuration)
+    .AddJWTVerifier();
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -26,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<JWTMiddleware>();
 
 app.UseAuthorization();
 

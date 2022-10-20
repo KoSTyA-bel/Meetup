@@ -1,18 +1,33 @@
 ﻿using Meetup.DataLayer.Configurations;
 using Microsoft.EntityFrameworkCore;
-using Models = Meetup.BusinessLayer.Models;
+using Meetup.BusinessLayer.Models;
 
 namespace Meetup.DataLayer.Contexts;
 
+/// <summary>
+/// Meeting database context.
+/// </summary>
+/// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
 public class MeetupContext : DbContext
 {
+	/// <summary>
+	/// Initializes a new instance of the <see cref="MeetupContext"/> class.
+	/// </summary>
+	/// <param name="options">The context options.</param>
 	public MeetupContext(DbContextOptions<MeetupContext> options)
 		:base(options)
 	{}
 
-	public DbSet<Models.Meetup> Meetups { get; set; }
+	/// <summary>
+	/// Gets or sets the meetings.
+	/// </summary>
+	/// <value>
+	/// The meetings.
+	/// </value>
+	public DbSet<Meeting> Meetings { get; set; }
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <inheritdoc/>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.ApplyConfiguration(new MeetupConfiguration());
 

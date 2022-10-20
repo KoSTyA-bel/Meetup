@@ -1,6 +1,6 @@
 ﻿namespace Meetup.BusinessLayer.Models;
 
-public class Meetup
+public class Meeting
 {
     public Guid Id { get; set; }
 
