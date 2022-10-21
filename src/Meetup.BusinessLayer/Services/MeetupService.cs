@@ -1,4 +1,5 @@
 ﻿using Meetup.BusinessLayer.Interfaces;
+using Meetup.BusinessLayer.Models;
 
 namespace Meetup.BusinessLayer.Services;
 
@@ -27,7 +28,7 @@ public class MeetupService : IMeetupService
     }
 
     /// <inheritdoc/>
-    public async Task<Models.Meeting> Create(Models.Meeting meetup, CancellationToken token)
+    public async Task<Meeting> Create(Meeting meetup, CancellationToken token)
     {
         if (meetup is null)
         {
@@ -61,13 +62,13 @@ public class MeetupService : IMeetupService
     }
 
     /// <inheritdoc/>
-    public Task<List<Models.Meeting>> GetAll(CancellationToken token)
+    public Task<List<Meeting>> GetAll(CancellationToken token)
     {
         return _provider.GetAll(token);
     }
 
     /// <inheritdoc/>
-    public Task<Models.Meeting> GetById(Guid id, CancellationToken token)
+    public Task<Meeting> GetById(Guid id, CancellationToken token)
     {
         if (id == Guid.Empty)
         {
@@ -78,7 +79,7 @@ public class MeetupService : IMeetupService
     }
 
     /// <inheritdoc/>
-    public Task<List<Models.Meeting>> GetRange(int page, int pageSize, CancellationToken token)
+    public Task<List<Meeting>> GetRange(int page, int pageSize, CancellationToken token)
     {
         if (page < 1)
         {
@@ -94,9 +95,23 @@ public class MeetupService : IMeetupService
     }
 
     /// <inheritdoc/>
-    public async Task Update(Models.Meeting meetup, CancellationToken token)
+    public async Task Update(Meeting meetup, CancellationToken token)
     {
         if (meetup is null)
+        {
+            throw new ArgumentNullException(nameof(meetup));
+        }
+
+        try
+        {
+            var meetupInDb = await GetById(meetup.Id, token);
+
+            if (meetupInDb is null)
+            {
+                throw new ArgumentNullException(nameof(meetup));
+            }
+        }
+        catch (ArgumentException)
         {
             throw new ArgumentNullException(nameof(meetup));
         }

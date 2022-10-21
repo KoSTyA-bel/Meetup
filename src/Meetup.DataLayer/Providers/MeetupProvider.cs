@@ -37,7 +37,7 @@ public class MeetupProvider : IMeetupProvider
     public Task<Meeting> GetById(Guid id, CancellationToken token)
     {
         _logger.LogTrace("Get meetup by id={id}", id);
-        return _meetings.FirstOrDefaultAsync(x => x.Id == id, token);
+        return _meetings.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, token);
     }
 
     /// <inheritdoc/>

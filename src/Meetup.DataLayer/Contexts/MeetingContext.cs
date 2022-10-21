@@ -8,13 +8,13 @@ namespace Meetup.DataLayer.Contexts;
 /// Meeting database context.
 /// </summary>
 /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
-public class MeetupContext : DbContext
+public class MeetingContext : DbContext
 {
 	/// <summary>
-	/// Initializes a new instance of the <see cref="MeetupContext"/> class.
+	/// Initializes a new instance of the <see cref="MeetingContext"/> class.
 	/// </summary>
 	/// <param name="options">The context options.</param>
-	public MeetupContext(DbContextOptions<MeetupContext> options)
+	public MeetingContext(DbContextOptions<MeetingContext> options)
 		:base(options)
 	{}
 

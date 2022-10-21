@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Meetup.DataLayer.Migrations
 {
-    [DbContext(typeof(MeetupContext))]
+    [DbContext(typeof(MeetingContext))]
     partial class MeetupContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

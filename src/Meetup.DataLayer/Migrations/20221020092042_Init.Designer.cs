@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Meetup.DataLayer.Migrations
 {
-    [DbContext(typeof(MeetupContext))]
+    [DbContext(typeof(MeetingContext))]
     [Migration("20221020092042_Init")]
     partial class Init
     {

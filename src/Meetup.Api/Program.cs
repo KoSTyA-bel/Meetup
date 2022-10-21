@@ -44,3 +44,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+namespace Meetup
+{
+    public partial class Program { }
+}

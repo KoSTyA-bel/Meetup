@@ -21,7 +21,7 @@ public static class DataLayerExtensions
     /// <returns>Service collection.</returns>
     public static IServiceCollection AddMeetingDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("MeetupDB");
+        var connectionString = configuration.GetConnectionString("MeetingDB");
 
         services.AddMeetingDatabase(connectionString);
 
@@ -36,13 +36,13 @@ public static class DataLayerExtensions
     /// <returns>Service collection.</returns>
     public static IServiceCollection AddMeetingDatabase(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContextPool<MeetupContext>(options => options.UseNpgsql(connectionString));
+        services.AddDbContextPool<MeetingContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped(provider =>
             {
-                var service = provider.GetService(typeof(MeetupContext)) as MeetupContext;
+                var service = provider.GetService(typeof(MeetingContext)) as MeetingContext;
                 return service.Meetings;
             })
-            .AddScoped<IDataContext, MeetupDataContext>()
+            .AddScoped<IDataContext, MeetingDataContext>()
             .AddScoped<IMeetupRepository, MeetupRepository>()
             .AddScoped<IMeetupProvider, MeetupProvider>();
 

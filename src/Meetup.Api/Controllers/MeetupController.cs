@@ -88,11 +88,21 @@ public class MeetupController : ControllerBase
     [HttpPut("Update-meetup")]
     [AuthorizeJWT]
     [SwaggerResponse(200, "Successfully updating meetup")]
+    [SwaggerResponse(400, "Meeting does not exist")]
     [SwaggerResponse(401, "Unauthorized")]
     public async Task<ActionResult> Update([FromBody] Models.Meetup meetup)
     {
         var mapped = _mapper.Map<Meeting>(meetup);
-        await _service.Update(mapped, CancellationToken.None);
+
+        try
+        {
+            await _service.Update(mapped, CancellationToken.None);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest();
+        }
+        
 
         return Ok();
     }
